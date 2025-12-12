@@ -14,6 +14,7 @@ router.get('/libraries', authenticate, async (req, res) => {
   res.json(data);
 });
 
+router.get('/items', authenticate, requireSubscription(), async (req, res) => {
 router.get('/items', authenticate, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.id } });
   if (!user?.jellyfinAccessToken) {

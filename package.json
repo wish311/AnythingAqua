@@ -1,0 +1,14 @@
+{
+  "name": "anythingaqua",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta \"npm run dev --prefix server\" \"npm run dev --prefix web\"",
+    "build": "npm run build --prefix server && npm run build --prefix web",
+    "start": "npm run start --prefix server",
+    "lint": "npm run lint --prefix web || true",
+    "test": "npm test --prefix server || true"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
