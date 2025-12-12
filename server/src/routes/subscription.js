@@ -45,8 +45,8 @@ router.post('/checkout', authenticate, async (req, res) => {
         tier
       }
     },
-    success_url: `${config.frontendUrl.replace(/\/$/, '')}/checkout/success?tier=${tier}`,
-    cancel_url: `${config.frontendUrl.replace(/\/$/, '')}/checkout/cancel`
+    success_url: `${config.frontendUrl}/subscribe/success?tier=${tier}`,
+    cancel_url: `${config.frontendUrl}/subscribe`
   });
   res.json({ url: session.url });
 });

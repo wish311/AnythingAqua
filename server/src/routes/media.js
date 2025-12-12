@@ -1,12 +1,11 @@
 import express from 'express';
 import { authenticate } from '../middleware/auth.js';
-import { requireSubscription } from '../middleware/subscription.js';
 import { prisma } from '../prisma.js';
 import { fetchLibraryItems } from '../services/jellyfinService.js';
 
 const router = express.Router();
 
-router.get('/libraries', authenticate, requireSubscription(), async (req, res) => {
+router.get('/libraries', authenticate, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.id } });
   if (!user?.jellyfinAccessToken) {
     return res.status(400).json({ message: 'Jellyfin not provisioned' });
@@ -16,6 +15,7 @@ router.get('/libraries', authenticate, requireSubscription(), async (req, res) =
 });
 
 router.get('/items', authenticate, requireSubscription(), async (req, res) => {
+router.get('/items', authenticate, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.id } });
   if (!user?.jellyfinAccessToken) {
     return res.status(400).json({ message: 'Jellyfin not provisioned' });

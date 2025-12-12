@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id                  Int           @id @default(autoincrement())
-  email               String        @unique
-  passwordHash        String
-  subscriptionTier    String?
-  jellyfinUserId      String?
+  id                 Int           @id @default(autoincrement())
+  email              String        @unique
+  passwordHash       String
+  subscriptionTier   String?
+  jellyfinUserId     String?
   jellyfinAccessToken String?
-  createdAt           DateTime      @default(now())
-  subscriptions       Subscription[]
+  createdAt          DateTime      @default(now())
+  subscriptions      Subscription[]
 }
 
 model Subscription {
@@ -27,10 +27,4 @@ model Subscription {
   currentPeriodEnd     DateTime
   user                 User     @relation(fields: [userId], references: [id])
   createdAt            DateTime @default(now())
-}
-
-model WebhookEvent {
-  id      Int    @id @default(autoincrement())
-  eventId String @unique
-  createdAt DateTime @default(now())
 }

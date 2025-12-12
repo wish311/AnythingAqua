@@ -1,5 +1,4 @@
 import axios from 'axios';
-import NodeCache from 'node-cache';
 import { config } from '../config.js';
 
 const adminClient = axios.create({
@@ -7,11 +6,8 @@ const adminClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Emby-Token': config.jellyfinApiToken
-  },
-  timeout: 8000
+  }
 });
-
-const publicCache = new NodeCache({ stdTTL: 300, checkperiod: 120 });
 
 export async function createJellyfinUser(name, password) {
   const response = await adminClient.post('/Users/New', {
@@ -59,8 +55,7 @@ export async function authenticateJellyfinUser(username, password) {
     Username: username,
     Pw: password
   }, {
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 8000
+    headers: { 'Content-Type': 'application/json' }
   });
   return response.data;
 }
@@ -71,30 +66,7 @@ export async function fetchLibraryItems(accessToken, parentId) {
     params,
     headers: {
       'X-Emby-Token': accessToken
-    },
-    timeout: 8000
+    }
   });
   return response.data;
-}
-
-export async function fetchPublicMediaStats() {
-  const cached = publicCache.get('mediaStats');
-  if (cached) return cached;
-  const response = await adminClient.get('/Items/Counts');
-  const data = {
-    movies: response.data.MovieCount || 0,
-    series: response.data.SeriesCount || 0,
-    episodes: response.data.EpisodeCount || 0
-  };
-  publicCache.set('mediaStats', data);
-  return data;
-}
-
-export async function checkJellyfinHealth() {
-  try {
-    await adminClient.get('/System/Info');
-    return true;
-  } catch (err) {
-    return false;
-  }
 }

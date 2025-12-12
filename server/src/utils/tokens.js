@@ -16,7 +16,7 @@ export function setAuthCookies(res, tokens) {
   });
   res.cookie('refreshToken', tokens.refreshToken, {
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: config.cookieSecure,
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
