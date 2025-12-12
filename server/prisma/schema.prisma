@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int           @id @default(autoincrement())
+  email               String        @unique
+  passwordHash        String
+  subscriptionTier    String?
+  jellyfinUserId      String?
+  jellyfinAccessToken String?
+  createdAt           DateTime      @default(now())
+  subscriptions       Subscription[]
+}
+
+model Subscription {
+  id                   Int      @id @default(autoincrement())
+  stripeSubscriptionId String   @unique
+  userId               Int
+  tier                 String
+  status               String
+  currentPeriodEnd     DateTime
+  user                 User     @relation(fields: [userId], references: [id])
+  createdAt            DateTime @default(now())
+}
+
+model WebhookEvent {
+  id      Int    @id @default(autoincrement())
+  eventId String @unique
+  createdAt DateTime @default(now())
+}
